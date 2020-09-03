@@ -24,8 +24,11 @@ public:
     void previousFrame();
     void nextFrame();
     
-	std::vector<ofImage> _frames;
+	//std::vector<ofImage> _frames;
+	std::vector<ofPixels> _frames;
+
     int _currentFrame;
+	ofTexture _currentTexture;
     
     ofParameterGroup _parameters;
     ofParameter<int> _fps;

@@ -1,10 +1,14 @@
 #include "ofxImageSequencePlayer.h"
 ofxImageSequencePlayer::ofxImageSequencePlayer(): _currentFrame(-1), _loopState(OF_LOOP_NORMAL){}
 void ofxImageSequencePlayer::setup(){}
-void ofxImageSequencePlayer::update(){}
+void ofxImageSequencePlayer::update(){
+	if (_currentFrame >= 0 && _currentFrame < _frames.size()) {
+		_currentTexture.loadData(_frames[_currentFrame]);
+	}
+}
 void ofxImageSequencePlayer::draw(int x, int y, int width, int height){
-    if(_currentFrame >=0 && _currentFrame < _frames.size()){
-        _frames[_currentFrame].draw(x, y, width, height);
+    if(_currentTexture.isAllocated()){
+        _currentTexture.draw(x, y, width, height);
     }
 }
 bool ofxImageSequencePlayer::load(std::string path) {
@@ -16,8 +20,13 @@ bool ofxImageSequencePlayer::load(std::string path) {
         auto frames = dir.getFiles();
         for(auto & frame : dir.getFiles()){
             ofLogNotice() << frame.getFileName();
-            ofImage img(frame.getAbsolutePath());
-            _frames.push_back(img);
+            //ofImage img(frame.getAbsolutePath());
+			//_frames.push_back(img);
+
+			ofPixels pix;
+			ofLoadImage(pix, frame.getAbsolutePath());
+			_frames.push_back(pix);
+
         }
         _currentFrame = 0;
         return true;
@@ -43,6 +52,7 @@ int ofxImageSequencePlayer::getCurrentFrame(){
     return _currentFrame;
 }
 float ofxImageSequencePlayer::getPosition(){
+	if (_frames.size() == 0) return 0;
     return (float)(_currentFrame)/_frames.size();
 }
 void ofxImageSequencePlayer::firstFrame(){
