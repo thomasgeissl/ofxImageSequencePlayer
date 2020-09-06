@@ -118,7 +118,8 @@ void ofxImageSequencePlayer::setSpeed(float speed) {
 
 ofPixels & ofxImageSequencePlayer::getPixels() {
 	if (!isFrameValid(_currentFrame)) {
-		return ofPixels();
+		auto pix = ofPixels();
+		return pix;
 	}
 	return _frames[_currentFrame];
 }
