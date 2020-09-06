@@ -17,6 +17,7 @@ void ofxImageSequencePlayer::draw(int x, int y, int width, int height){
     }
 }
 bool ofxImageSequencePlayer::load(std::string path) {
+	ofLogVerbose("ofxImageSequencePlayer") << "loading sequence: " << path;
     if(ofDirectory::doesDirectoryExist(path)){
 		_frames.clear();
         ofDirectory dir(path);
@@ -24,7 +25,7 @@ bool ofxImageSequencePlayer::load(std::string path) {
         dir = dir.getSorted();
         auto frames = dir.getFiles();
         for(auto & frame : dir.getFiles()){
-            ofLogNotice() << frame.getFileName();
+            //ofLogNotice() << frame.getFileName();
             //ofImage img(frame.getAbsolutePath());
 			//_frames.push_back(img);
 
