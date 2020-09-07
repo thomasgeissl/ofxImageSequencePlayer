@@ -45,7 +45,7 @@ void ofxImageSequencePlayer::loadAsync(std::string path) {
 	ofLogWarning("ofxImageSequencePlayer::loadAsync") << "not yet implemented";
 }
 void ofxImageSequencePlayer::close() {
-
+	_frames.clear();
 }
 void ofxImageSequencePlayer::play(){}
 void ofxImageSequencePlayer::stop(){}
@@ -74,7 +74,10 @@ float ofxImageSequencePlayer::getHeight() const {
 };
 
 bool ofxImageSequencePlayer::isPaused() const { return false; };
-bool ofxImageSequencePlayer::isLoaded() const { return true; };
+bool ofxImageSequencePlayer::isLoaded() const {
+	//TODO: check if loading thread has finished as well
+	return _frames.size() > 0; 
+};
 bool ofxImageSequencePlayer::isPlaying() const { return true; };
 
 int ofxImageSequencePlayer::getTotalNumFrames(){
