@@ -4,6 +4,7 @@
 class ofxImageSequencePlayer : public ofBaseVideoPlayer{
 public:
     ofxImageSequencePlayer();
+	ofxImageSequencePlayer(const ofxImageSequencePlayer &other);
 	void setup();
 	void update();
 	void draw(float x, float y);
@@ -49,10 +50,15 @@ public:
 	float getSpeed() const;
 
 	bool setPixelFormat(ofPixelFormat pixelFormat) { 
-		ofLogWarning("ofxImageSequencePlayer::setPixelFormat") << "has no effect";
+		_pixelFormat = pixelFormat;
+		//TODO: convert existing pixels
 		return false; 
 	};
+	void setImageType(ofImageType imageType) {
+		_imageType = imageType;
+	}
 	ofPixelFormat getPixelFormat() const;
+	std::vector<ofPixels> getFrames();
 
     
 	//std::vector<ofImage> _frames;
@@ -64,9 +70,12 @@ public:
     ofParameterGroup _parameters;
     ofParameter<int> _fps;
     
-private:
+//private:
 	inline bool isFrameValid(const int frame) {
 		return frame >= 0 && frame < _frames.size();
 	}
     ofLoopType _loopState;
+	ofImageLoadSettings _loadSettings;
+	ofPixelFormat _pixelFormat;
+	ofImageType _imageType;
 };

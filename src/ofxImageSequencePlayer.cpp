@@ -1,5 +1,9 @@
 #include "ofxImageSequencePlayer.h"
-ofxImageSequencePlayer::ofxImageSequencePlayer(): _currentFrame(-1), _loopState(OF_LOOP_NORMAL){}
+ofxImageSequencePlayer::ofxImageSequencePlayer(): _currentFrame(-1), _loopState(OF_LOOP_NORMAL), _imageType(ofImageType::OF_IMAGE_COLOR_ALPHA){}
+ofxImageSequencePlayer::ofxImageSequencePlayer(const ofxImageSequencePlayer &other) : _frames(other._frames), _currentFrame(other._currentFrame), _loopState(other._loopState), _imageType(other._imageType), _currentTexture(other._currentTexture) {
+
+}
+
 void ofxImageSequencePlayer::setup(){}
 void ofxImageSequencePlayer::update(){
 	if (_currentFrame >= 0 && _currentFrame < _frames.size()) {
@@ -28,9 +32,14 @@ bool ofxImageSequencePlayer::load(std::string path) {
             //ofLogNotice() << frame.getFileName();
             //ofImage img(frame.getAbsolutePath());
 			//_frames.push_back(img);
-
+			 
 			ofPixels pix;
+			//TODO: check why loading grayscale image does not work
+			//ofImageLoadSettings settings;
+			//settings.grayscale = true;
 			ofLoadImage(pix, frame.getAbsolutePath());
+			pix.setImageType(_imageType);
+	
 			_frames.push_back(pix);
 
         }
@@ -135,4 +144,8 @@ const ofPixels& ofxImageSequencePlayer::getPixels() const {
 
 ofPixelFormat ofxImageSequencePlayer::getPixelFormat() const {
 	return _frames.size() > 0 ? _frames[0].getPixelFormat() : OF_PIXELS_UNKNOWN;
+}
+
+std::vector<ofPixels> ofxImageSequencePlayer::getFrames() {
+	return _frames;
 }
